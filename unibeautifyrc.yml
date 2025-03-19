@@ -1,0 +1,7 @@
+---
+HTML:
+  beautifiers: ["Pretty Diff"]
+CSS:
+  beautifiers: ["Pretty Diff"]
+JavaScript:
+  beautifiers: ["Pretty Diff"]
