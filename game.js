@@ -45,7 +45,7 @@ function initGame() {
 }
 initGame();
 
-// opening buttons
+// opening screen
 const playerNumberButton = new TextButton(playerNumber, 200, 200, 40, 40, () => {}, ctx);
 const playerDecreaseButton = new TextButton("◀︎", 150, 200, 40, 40, () => {
   playerNumber = Math.max(playerNumber - 1, 2);
@@ -89,6 +89,7 @@ function drawOpeningScreen() {
   drawOpeningScreenButtons();
 }
 
+// game screen
 function drawGameScreen() {
   ctx.font = "24px Arial";
   ctx.textAlign = "center";
@@ -96,6 +97,7 @@ function drawGameScreen() {
 }
 
 function drawEndingScreen() {}
+// ending screen
 
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
