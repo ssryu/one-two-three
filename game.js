@@ -1,4 +1,5 @@
 import {TextButton} from "./component.js";
+import {Player} from "./player.js";
 
 // const
 const canvas = document.getElementById("gameCanvas");
@@ -56,7 +57,7 @@ const playerIncreaseButton = new TextButton("▶︎", 250, 200, 40, 40, () => {
 }, ctx);
 const startGameButton = new TextButton("Game Start", canvas.width / 2 - 75, 300, 150, 50, () => {
   canvas.removeEventListener("click", handleOpeningScreenClick);
-  currentGameState = gameState.GAME;
+  startGame();
 }, ctx);
 const openingScreenButtons = [playerNumberButton, playerDecreaseButton, playerIncreaseButton, startGameButton];
 
@@ -70,6 +71,14 @@ function drawOpeningScreenButtons() {
   for (let button of openingScreenButtons) {
     button.draw();
   }
+}
+
+function startGame() {
+  for (let i = 0; i < playerNumber; i++) {
+    players.push(new Player());
+  }
+  canvas.addEventListener("click", handleGameScreenClick);
+  currentGameState = gameState.GAME;
 }
 
 function drawOpeningScreen() {
