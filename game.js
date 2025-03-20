@@ -9,10 +9,40 @@ const gameState = {
   GAME: "game",
   ENDING: "ending"
 };
+const itemType = {
+  TOKEN: "token",
+  TRASH: "trash"
+};
 
 // init
 let currentGameState = gameState.OPENING;
 let playerNumber = 2;
+let currentPlayer = 0;
+let previousNumber = 0;
+let players = [];
+let items = [];
+
+function createItem() {
+  let random = Math.random();
+  if (random < 0.3) {
+    items.unshift(itemType.TOKEN);
+  } else {
+    items.unshift(itemType.TRASH);
+  }
+}
+
+function initGame() {
+  currentGameState = gameState.OPENING;
+  currentPlayer = 0;
+  previousNumber = 0;
+  players = [];
+  items = [];
+  for (let i = 0; i < 7; i++) {
+    createItem();
+  }
+  canvas.addEventListener("click", handleOpeningScreenClick);
+}
+initGame();
 
 // opening buttons
 const playerNumberButton = new TextButton(playerNumber, 200, 200, 40, 40, () => {}, ctx);
@@ -47,7 +77,6 @@ function drawOpeningScreen() {
   ctx.textAlign = "center";
   ctx.fillText("プレイ人数を選んでください", canvas.width / 2, 100);
 
-  canvas.addEventListener("click", handleOpeningScreenClick);
   drawOpeningScreenButtons();
 }
 
