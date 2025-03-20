@@ -90,10 +90,70 @@ function drawOpeningScreen() {
 }
 
 // game screen
+const number1Button = new TextButton(1, 100, 200, 100, 40, () => {
+  nextTurn(1);
+}, ctx);
+const number2Button = new TextButton(2, 250, 200, 100, 40, () => {
+  nextTurn(2);
+}, ctx);
+const number3Button = new TextButton(3, 400, 200, 100, 40, () => {
+  nextTurn(3);
+}, ctx);
+const numberButtons = [number1Button, number2Button, number3Button];
+
+function nextTurn(selectedNumber) {
+  if (previousNumber === selectedNumber) {
+    return;
+  }
+
+  for (let i = 0; i < selectedNumber; i++) {
+    let item = items.pop();
+    switch (item) {
+      case itemType.TOKEN:
+        players[currentPlayer].score++;
+        break;
+      case itemType.TRASH:
+        break;
+    }
+    createItem();
+  }
+
+  if (players[currentPlayer].score >= 10) {
+    canvas.removeEventListener("click", handleGameScreenClick);
+    currentGameState = gameState.ENDING;
+    return;
+  }
+
+  previousNumber = selectedNumber;
+  currentPlayer = (currentPlayer + 1) % playerNumber;
+}
+
+function handleGameScreenClick(event) {
+  for (let button of numberButtons) {
+    button.onClick(event);
+  }
+}
+
+function drawGameScreenButtons() {
+  for (let button of numberButtons) {
+    button.draw(button.text === previousNumber);
+  }
+  for (let i = 0; i < items.length; i++) {
+    let item = new TextButton(items[i], 200, 300 + i * 70, 60, 60, () => {}, ctx);
+    item.draw();
+  }
+  for (let i = 0; i < players.length; i++) {
+    let score = new TextButton(players[i].score, 300, 300 + i * 70, 60, 60, () => {}, ctx);
+    score.draw();
+  }
+}
+
 function drawGameScreen() {
   ctx.font = "24px Arial";
   ctx.textAlign = "center";
-  ctx.fillText(`プレイヤー 1 のターン`, canvas.width / 2, 50);
+  ctx.fillText(`プレイヤー ${currentPlayer + 1} のターン`, canvas.width / 2, 50);
+
+  drawGameScreenButtons();
 }
 
 function drawEndingScreen() {}
