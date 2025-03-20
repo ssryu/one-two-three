@@ -120,6 +120,7 @@ function nextTurn(selectedNumber) {
 
   if (players[currentPlayer].score >= 10) {
     canvas.removeEventListener("click", handleGameScreenClick);
+    canvas.addEventListener("click", handleEndingScreenClick);
     currentGameState = gameState.ENDING;
     return;
   }
@@ -156,8 +157,33 @@ function drawGameScreen() {
   drawGameScreenButtons();
 }
 
-function drawEndingScreen() {}
 // ending screen
+const retryButton = new TextButton("もう一度遊ぶ", 150, 200, 150, 40, () => {
+  initGame();
+  canvas.removeEventListener("click", handleEndingScreenClick);
+  currentGameState = gameState.OPENING;
+}, ctx);
+const endingScreenButtons = [retryButton];
+
+function handleEndingScreenClick(event) {
+  for (let button of endingScreenButtons) {
+    button.onClick(event);
+  }
+}
+
+function drawEndingScreenButtons() {
+  for (let button of endingScreenButtons) {
+    button.draw();
+  }
+}
+
+function drawEndingScreen() {
+  ctx.font = "24px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(`プレイヤー ${currentPlayer + 1} の勝利`, canvas.width / 2, 100);
+
+  drawEndingScreenButtons();
+}
 
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
