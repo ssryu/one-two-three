@@ -49,6 +49,11 @@ const playerIncreaseButton = new TextButton("▶︎", 250, 200, 40, 40, () => {
   playerNumberButton.text = playerNumber;
 }, gameState.OPENING);
 
+//"Game Start 버튼 추가"
+const startGameButton = new TextButton("Game Start", canvas.width /  2 - 75, 300, 150, 50, () => {
+    currentGameState = gameState.GAME;
+  }, gameState.OPENING);
+
 function drawOpeningScreen() {
   ctx.font = "24px Arial";
   ctx.textAlign = "center";
@@ -57,6 +62,7 @@ function drawOpeningScreen() {
   playerDecreaseButton.draw();
   playerNumberButton.draw();
   playerIncreaseButton.draw();
+  startGameButton.draw(); //"Game Start" 버튼 추가
 }
 
 function drawGameScreen() {
@@ -88,4 +94,3 @@ function main() {
 }
 
 main();
-
