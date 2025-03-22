@@ -51,7 +51,7 @@ export class TextButton {
     if (this.iconLoaded) {
       let iconSize = 20;
       let iconX = this.x + 10;                            
-      let iconY = this.y + (this.height - iconSize) 2;    
+      let iconY = this.y + (this.height - iconSize) / 2;    
       this.ctx.drawImage(this.icon, iconX, iconY, iconSize, iconSize);
     }
 
