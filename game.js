@@ -18,6 +18,7 @@ const gameState = {
 let currentGameState = gameState.OPENING;
 let playerNumber = 2;
 let currentPlayer = 0;
+let deadPlayerNumber = 0;
 let previousNumber = 0;
 let players = [];
 /**
@@ -239,6 +240,11 @@ function animateItems() {
       currentGameState = gameState.ENDING;
       return;
     }
+
+    if (players[currentPlayer].hp <= 0) {
+      itemPopCountRemain = 0;
+      deadPlayerNumber++;
+    }
     if (itemPopCountRemain > 0) {
       animateItems();
     }
@@ -251,6 +257,15 @@ function animateItems() {
 function update() {
   if (currentGameState === gameState.GAME) {
     bgm.play();
+    if (deadPlayerNumber === playerNumber - 1) {
+      canvas.removeEventListener("click", handleGameScreenClick);
+      canvas.addEventListener("click", handleEndingScreenClick);
+      currentGameState = gameState.ENDING;
+      return;
+    }
+    if (players[currentPlayer].hp <= 0) {
+      currentPlayer = (currentPlayer + 1) % playerNumber;
+    }
   } else {
     bgm.pause();
     bgm.currentTime = 0;
