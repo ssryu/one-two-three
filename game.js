@@ -50,6 +50,7 @@ const playerNumberMax = 3;
 function initGame() {
   currentGameState = gameState.OPENING;
   currentPlayer = 0;
+  deadPlayerNumber = 0;
   previousNumber = 0;
   players = [];
   items = [];
