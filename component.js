@@ -49,3 +49,21 @@ export class IconButton extends TextButton {
     }
   }
 }
+
+export class RightArrowButton extends IconButton {
+  constructor(x, y, width, height, onClick, ctx) {
+    super("다음", x, y, width, height, onClick, ctx, "images/icons8-원-셰브론-오른쪽-50.png");
+  }
+}
+
+export class LeftArrowButton extends IconButton {
+  constructor(x, y, width, height, onClick, ctx) {
+    super("이전", x, y, width, height, onClick, ctx, "images/icons8-원-셰브론-왼쪽-50.png");
+  }
+}
+
+export class PlayButton extends IconButton {
+  constructor(x, y, width, height, onClick, ctx) {
+    super("재생", x, y, width, height, onClick, ctx, "images/icons8-원-플레이.gif");
+  }
+}
