@@ -151,11 +151,22 @@ function drawGameScreenButtons() {
   }
 }
 
+/**
+ * Item が入っているパイプを描画します。
+ */
+function drawPipe() {
+  ctx.fillStyle = "gray";
+  ctx.fillRect(37, 0, 3, 283);
+  ctx.fillRect(80, 0, 3, 283);
+  ctx.fillRect(37, 280, 46, 3);
+}
+
 function drawGameScreen() {
   ctx.font = "24px Arial";
   ctx.textAlign = "center";
   ctx.fillText(`プレイヤー ${currentPlayer + 1} のターン`, canvas.width / 2, 50);
 
+  drawPipe();
   drawGameScreenButtons();
   for (let i = 0; i < players.length; i++) {
     players[(i + currentPlayer) % playerNumber].x = playerXPositions[i];
