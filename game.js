@@ -34,6 +34,16 @@ let itemPopCountRemain = 0;
  * @type {number}
  */
 let clickCoolDown = 0;
+/**
+ * 最小のプレイヤー数
+ * @type {number}
+ */
+const playerNumberMin = 2;
+/**
+ * 最大のプレイヤー数
+ * @type {number}
+ */
+const playerNumberMax = 3;
 
 function initGame() {
   currentGameState = gameState.OPENING;
@@ -51,11 +61,11 @@ initGame();
 // opening screen
 const playerNumberButton = new TextButton(playerNumber, 200, 200, 40, 40, () => {}, ctx);
 const playerDecreaseButton = new TextButton("◀︎", 150, 200, 40, 40, () => {
-  playerNumber = Math.max(playerNumber - 1, 2);
+  playerNumber = Math.max(playerNumber - 1, playerNumberMin);
   playerNumberButton.text = playerNumber;
 }, ctx);
 const playerIncreaseButton = new TextButton("▶︎", 250, 200, 40, 40, () => {
-  playerNumber = Math.min(playerNumber + 1, 8);
+  playerNumber = Math.min(playerNumber + 1, playerNumberMax);
   playerNumberButton.text = playerNumber;
 }, ctx);
 const startGameButton = new TextButton("Game Start", canvas.width / 2 - 75, 300, 150, 50, () => {
