@@ -1,6 +1,9 @@
 import {GameObject} from "./gameObject.js";
 import {coinItemImage} from "./item.js";
 
+const angelRingImage = new Image();
+angelRingImage.src = "/images/tenshi_ring.png";
+
 /**
  * @property {number} hp
  * @property {number} score
@@ -42,5 +45,10 @@ export class Player extends GameObject {
 
     // draw character
     this.ctx.drawImage(this.image, this.x, this.y + 50, 80, 80);
+
+    // draw dead image
+    if (this.hp <= 0) {
+      this.ctx.drawImage(angelRingImage, this.x + 15, this.y + 50, 50, 20);
+    }
   }
 }
