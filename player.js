@@ -2,7 +2,7 @@ import {GameObject} from "./gameObject.js";
 import {coinItemImage} from "./item.js";
 
 const angelRingImage = new Image();
-angelRingImage.src = "/images/tenshi_ring.png";
+angelRingImage.src = "./images/tenshi_ring.png";
 
 /**
  * @property {number} hp
