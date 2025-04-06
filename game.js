@@ -2,6 +2,7 @@ import {TextButton} from "./component.js";
 import {Player} from "./player.js";
 import {Item} from "./item.js";
 import {Action} from "./action.js";
+import {bgm} from "./sounds/sounds.js";
 
 // const
 const canvas = document.getElementById("gameCanvas");
@@ -248,6 +249,12 @@ function animateItems() {
 }
 
 function update() {
+  if (currentGameState === gameState.GAME) {
+    bgm.play();
+  } else {
+    bgm.pause();
+    bgm.currentTime = 0;
+  }
   clickCoolDown--;
   for (let item of items) {
     item.update();

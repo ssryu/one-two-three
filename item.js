@@ -1,5 +1,6 @@
 import {GameObject} from "./gameObject.js";
 import {Player} from "./player.js";
+import {bombSound, coinSound} from "./sounds/sounds.js";
 
 /**
  * Item interface.
@@ -90,6 +91,7 @@ export class Coin extends Item {
      */
   effect(player) {
     player.score += 1;
+    coinSound.cloneNode().play();
   }
 }
 
@@ -120,7 +122,9 @@ export class Bomb extends Item {
      * @param {Player} player
      */
   effect(player) {
-    player.hp -= 1;
+    const random = Math.floor(Math.random() * 4) + 1;
+    player.hp -= random;
+    bombSound.cloneNode().play();
   }
 }
 
