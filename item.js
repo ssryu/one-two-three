@@ -100,6 +100,8 @@ bombItemImage.src = "./images/bomb.png";
 
 export class Bomb extends Item {
   image = bombItemImage;
+  minDamage = 1;
+  maxDamage = 4;
 
   /**
      * @param {number} x
@@ -122,8 +124,8 @@ export class Bomb extends Item {
      * @param {Player} player
      */
   effect(player) {
-    const random = Math.floor(Math.random() * 4) + 1;
-    player.hp -= random;
+    const randomInt = Math.floor(Math.random() * (this.maxDamage + 1 - this.minDamage)) + this.minDamage;
+    player.hp = Math.max(player.hp - randomInt, 0);
     bombSound.cloneNode().play();
   }
 }
