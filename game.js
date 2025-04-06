@@ -256,24 +256,29 @@ function animateItems() {
 }
 
 function update() {
-  if (currentGameState === gameState.GAME) {
-    bgm.play();
-    if (deadPlayerNumber === playerNumber - 1) {
-      canvas.removeEventListener("click", handleGameScreenClick);
-      canvas.addEventListener("click", handleEndingScreenClick);
-      currentGameState = gameState.ENDING;
-      return;
-    }
-    if (players[currentPlayer].hp <= 0) {
-      currentPlayer = (currentPlayer + 1) % playerNumber;
-    }
-  } else {
-    bgm.pause();
-    bgm.currentTime = 0;
-  }
-  clickCoolDown--;
-  for (let item of items) {
-    item.update();
+  switch (currentGameState) {
+    case gameState.OPENING:
+      break;
+    case gameState.GAME:
+      bgm.play();
+      clickCoolDown--;
+      for (let item of items) {
+        item.update();
+      }
+      if (players[currentPlayer].hp <= 0) {
+        currentPlayer = (currentPlayer + 1) % playerNumber;
+      }
+      if (deadPlayerNumber === playerNumber - 1) {
+        canvas.removeEventListener("click", handleGameScreenClick);
+        canvas.addEventListener("click", handleEndingScreenClick);
+        currentGameState = gameState.ENDING;
+        return;
+      }
+      break;
+    case gameState.ENDING:
+      bgm.pause();
+      bgm.currentTime = 0;
+      break;
   }
 }
 
