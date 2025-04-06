@@ -11,24 +11,24 @@ import {Player} from "./player.js";
  * @property {CanvasRenderingContext2D} ctx
  */
 export class Item extends GameObject {
-  width = 40;
-  height = 40;
   /**
      * default function.
      * create random item.
      * @param {number} x
      * @param {number} y
+     * @param {number} width
+     * @param {number} height
      * @param {CanvasRenderingContext2D} ctx
      * @returns {Item}
      */
-  static createRandomItem(x, y, ctx) {
+  static createRandomItem(x, y, width, height, ctx) {
     let random = Math.random();
     if (random < 0.33) {
-      return new Coin(x, y, ctx);
+      return new Coin(x, y, width, height, ctx);
     } else if (random < 0.66) {
-      return new Bomb(x, y, ctx);
+      return new Bomb(x, y, width, height, ctx);
     } else {
-      return new Nothing(x, y, ctx);
+      return new Nothing(x, y, width, height, ctx);
     }
   }
 
@@ -62,18 +62,25 @@ export class Item extends GameObject {
   }
 }
 
+const coinItemImage = new Image();
+coinItemImage.src = "./images/coin.png";
+
 export class Coin extends Item {
+  image = coinItemImage;
+
   /**
      * @param {number} x
      * @param {number} y
+     * @param {number} width
+     * @param {number} height
      * @param {CanvasRenderingContext2D} ctx
      */
-  constructor(x, y, ctx) {
+  constructor(x, y, width, height, ctx) {
     super();
-    this.image = new Image();
-    this.image.src = "./images/coin.png";
     this.x = x;
     this.y = y;
+    this.width = width;
+    this.height = height;
     this.ctx = ctx;
   }
 
@@ -86,18 +93,25 @@ export class Coin extends Item {
   }
 }
 
+const bombItemImage = new Image();
+bombItemImage.src = "./images/bomb.png";
+
 export class Bomb extends Item {
+  image = bombItemImage;
+
   /**
      * @param {number} x
      * @param {number} y
+     * @param {number} width
+     * @param {number} height
      * @param {CanvasRenderingContext2D} ctx
      */
-  constructor(x, y, ctx) {
+  constructor(x, y, width, height, ctx) {
     super();
-    this.image = new Image();
-    this.image.src = "./images/bomb.png";
     this.x = x;
     this.y = y;
+    this.width = width;
+    this.height = height;
     this.ctx = ctx;
   }
 
@@ -110,18 +124,25 @@ export class Bomb extends Item {
   }
 }
 
+const nothingItemImage = new Image();
+nothingItemImage.src = "./images/sunflower.png";
+
 export class Nothing extends Item {
+  image = nothingItemImage;
+
   /**
      * @param {number} x
      * @param {number} y
+     * @param {number} width
+     * @param {number} height
      * @param {CanvasRenderingContext2D} ctx
      */
-  constructor(x, y, ctx) {
+  constructor(x, y, width, height, ctx) {
     super();
-    this.image = new Image();
-    this.image.src = "./images/sunflower.png";
     this.x = x;
     this.y = y;
+    this.width = width;
+    this.height = height;
     this.ctx = ctx;
   }
 

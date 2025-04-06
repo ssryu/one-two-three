@@ -42,7 +42,7 @@ function initGame() {
   players = [];
   items = [];
   for (let i = 0; i < 7; i++) {
-    items.push(Item.createRandomItem(40, i * 40, ctx));
+    items.push(Item.createRandomItem(40, i * 40, 40, 40, ctx));
   }
   canvas.addEventListener("click", handleOpeningScreenClick);
 }
@@ -197,7 +197,7 @@ function render() {
 }
 
 function animateItems() {
-  items.unshift(Item.createRandomItem(40, -40, ctx));
+  items.unshift(Item.createRandomItem(40, -40, 40, 40, ctx));
   clickCoolDown = 20;
   for (let item of items) {
     item.actions.push(new Action(item => {
