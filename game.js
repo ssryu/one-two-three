@@ -1,5 +1,7 @@
 import {TextButton} from "./component.js";
 import {Player} from "./player.js";
+import {Item} from "./item.js";
+import {Action} from "./action.js";
 
 // const
 const canvas = document.getElementById("gameCanvas");
@@ -10,10 +12,6 @@ const gameState = {
   GAME: "game",
   ENDING: "ending"
 };
-const itemType = {
-  TOKEN: "token",
-  TRASH: "trash"
-};
 
 // init
 let currentGameState = gameState.OPENING;
@@ -21,16 +19,21 @@ let playerNumber = 2;
 let currentPlayer = 0;
 let previousNumber = 0;
 let players = [];
+/**
+ * コイン、爆弾などのアイテム
+ * @type {Item[]}
+ */
 let items = [];
-
-function createItem() {
-  let random = Math.random();
-  if (random < 0.3) {
-    items.unshift(itemType.TOKEN);
-  } else {
-    items.unshift(itemType.TRASH);
-  }
-}
+/**
+ * あとアイテムを何回引くか
+ * @type {number}
+ */
+let itemPopCountRemain = 0;
+/**
+ * 1以上の時はクリックできないようにする
+ * @type {number}
+ */
+let clickCoolDown = 0;
 
 function initGame() {
   currentGameState = gameState.OPENING;
@@ -39,7 +42,7 @@ function initGame() {
   players = [];
   items = [];
   for (let i = 0; i < 7; i++) {
-    createItem();
+    items.push(Item.createRandomItem(40, i * 40, ctx));
   }
   canvas.addEventListener("click", handleOpeningScreenClick);
 }
@@ -90,13 +93,13 @@ function drawOpeningScreen() {
 }
 
 // game screen
-const number1Button = new TextButton(1, 100, 200, 100, 40, () => {
+const number1Button = new TextButton(1, 100, 500, 100, 40, () => {
   nextTurn(1);
 }, ctx);
-const number2Button = new TextButton(2, 250, 200, 100, 40, () => {
+const number2Button = new TextButton(2, 250, 500, 100, 40, () => {
   nextTurn(2);
 }, ctx);
-const number3Button = new TextButton(3, 400, 200, 100, 40, () => {
+const number3Button = new TextButton(3, 400, 500, 100, 40, () => {
   nextTurn(3);
 }, ctx);
 const numberButtons = [number1Button, number2Button, number3Button];
@@ -105,18 +108,12 @@ function nextTurn(selectedNumber) {
   if (previousNumber === selectedNumber) {
     return;
   }
-
-  for (let i = 0; i < selectedNumber; i++) {
-    let item = items.pop();
-    switch (item) {
-      case itemType.TOKEN:
-        players[currentPlayer].score++;
-        break;
-      case itemType.TRASH:
-        break;
-    }
-    createItem();
+  if (clickCoolDown > 0) {
+    return;
   }
+
+  itemPopCountRemain = selectedNumber;
+  animateItems();
 
   if (players[currentPlayer].score >= 10) {
     canvas.removeEventListener("click", handleGameScreenClick);
@@ -140,8 +137,7 @@ function drawGameScreenButtons() {
     button.draw(button.text === previousNumber);
   }
   for (let i = 0; i < items.length; i++) {
-    let item = new TextButton(items[i], 200, 300 + i * 70, 60, 60, () => {}, ctx);
-    item.draw();
+    items[i].draw();
   }
   for (let i = 0; i < players.length; i++) {
     let score = new TextButton(players[i].score, 300, 300 + i * 70, 60, 60, () => {}, ctx);
@@ -200,7 +196,36 @@ function render() {
   }
 }
 
+function animateItems() {
+  items.unshift(Item.createRandomItem(40, -40, ctx));
+  clickCoolDown = 20;
+  for (let item of items) {
+    item.actions.push(new Action(item => {
+      item.y += 10;
+    }, 4));
+  }
+  items[items.length - 1].actions.push(new Action(item => {
+    item.x += 1;
+  }, 10));
+  items[items.length - 1].actions.push(new Action(item => {
+    itemPopCountRemain--;
+    items.pop();
+    item.effect(players[currentPlayer]);
+    if (itemPopCountRemain > 0) {
+      animateItems();
+    }
+  }, 1));
+}
+
+function update() {
+  clickCoolDown--;
+  for (let item of items) {
+    item.update();
+  }
+}
+
 function main() {
+  update();
   render();
   requestAnimationFrame(main);
 }
