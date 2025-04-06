@@ -76,9 +76,18 @@ function drawOpeningScreenButtons() {
   }
 }
 
+const p1Image = new Image();
+p1Image.src = "./images/animal_arupaka.png";
+const p2Image = new Image();
+p2Image.src = "./images/animal_hiyoko.png";
+const p3Image = new Image();
+p3Image.src = "./images/animal_panda.png";
+const playerImages = [p1Image, p2Image, p3Image];
+const playerXPositions = [100, 200, 300];
+
 function startGame() {
   for (let i = 0; i < playerNumber; i++) {
-    players.push(new Player());
+    players.push(new Player(playerXPositions[i], 200, playerImages[i], ctx));
   }
   canvas.addEventListener("click", handleGameScreenClick);
   currentGameState = gameState.GAME;
@@ -114,16 +123,7 @@ function nextTurn(selectedNumber) {
 
   itemPopCountRemain = selectedNumber;
   animateItems();
-
-  if (players[currentPlayer].score >= 10) {
-    canvas.removeEventListener("click", handleGameScreenClick);
-    canvas.addEventListener("click", handleEndingScreenClick);
-    currentGameState = gameState.ENDING;
-    return;
-  }
-
   previousNumber = selectedNumber;
-  currentPlayer = (currentPlayer + 1) % playerNumber;
 }
 
 function handleGameScreenClick(event) {
@@ -139,10 +139,6 @@ function drawGameScreenButtons() {
   for (let i = 0; i < items.length; i++) {
     items[i].draw();
   }
-  for (let i = 0; i < players.length; i++) {
-    let score = new TextButton(players[i].score, 300, 300 + i * 70, 60, 60, () => {}, ctx);
-    score.draw();
-  }
 }
 
 function drawGameScreen() {
@@ -151,6 +147,10 @@ function drawGameScreen() {
   ctx.fillText(`プレイヤー ${currentPlayer + 1} のターン`, canvas.width / 2, 50);
 
   drawGameScreenButtons();
+  for (let i = 0; i < players.length; i++) {
+    players[(i + currentPlayer) % playerNumber].x = playerXPositions[i];
+    players[i].draw();
+  }
 }
 
 // ending screen
@@ -211,8 +211,17 @@ function animateItems() {
     itemPopCountRemain--;
     items.pop();
     item.effect(players[currentPlayer]);
+    if (players[currentPlayer].score >= 10) {
+      canvas.removeEventListener("click", handleGameScreenClick);
+      canvas.addEventListener("click", handleEndingScreenClick);
+      currentGameState = gameState.ENDING;
+      return;
+    }
     if (itemPopCountRemain > 0) {
       animateItems();
+    }
+    if (itemPopCountRemain === 0) {
+      currentPlayer = (currentPlayer + 1) % playerNumber;
     }
   }, 1));
 }

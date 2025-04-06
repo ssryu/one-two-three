@@ -62,7 +62,7 @@ export class Item extends GameObject {
   }
 }
 
-const coinItemImage = new Image();
+export const coinItemImage = new Image();
 coinItemImage.src = "./images/coin.png";
 
 export class Coin extends Item {
@@ -93,7 +93,7 @@ export class Coin extends Item {
   }
 }
 
-const bombItemImage = new Image();
+export const bombItemImage = new Image();
 bombItemImage.src = "./images/bomb.png";
 
 export class Bomb extends Item {
@@ -124,7 +124,7 @@ export class Bomb extends Item {
   }
 }
 
-const nothingItemImage = new Image();
+export const nothingItemImage = new Image();
 nothingItemImage.src = "./images/sunflower.png";
 
 export class Nothing extends Item {
